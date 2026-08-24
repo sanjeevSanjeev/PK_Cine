@@ -46,11 +46,19 @@ function wpm_admin_page() {
     wp_enqueue_script('wpm-admin-js', WPM_PLUGIN_URL . 'includes/assets/admin.bundle.js', [], '1.0', true);
     wp_enqueue_style('wpm-admin-css', WPM_PLUGIN_URL . 'includes/assets/App.bundle.css', [], '1.0');
 
-    // No wp_script_add_data here – the global filter will handle it
+    // Force ES module
+    wp_script_add_data('wpm-admin-js', 'type', 'module');
 
     wp_localize_script('wpm-admin-js', 'wpmAdmin', [
         'apiRoot'    => esc_url_raw(rest_url('wp/v2/portfolios')),
         'nonce'      => wp_create_nonce('wp_rest'),
         'taxonomies' => wpm_get_taxonomy_terms(),
+        'defaultHero' => get_option('wpm_default_hero_image', ''),
+        'enabledTaxonomies' => get_option('wpm_enabled_taxonomies', [
+            'portfolioType' => true,
+            'weddingType'   => true,
+            'style'         => true,
+            'location'      => true,
+        ]),
     ]);
 }
