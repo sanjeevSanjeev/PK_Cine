@@ -4,7 +4,7 @@
  * Plugin Name: Wedding Portfolio Manager
  * Description: A premium wedding portfolio manager for photographers and videographers to showcase wedding stories, films, and galleries.
  * Version: 1.0.0
- * Author: Your Name
+ * Author: Sanjeev Bhattarai
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wedding-portfolio-manager
