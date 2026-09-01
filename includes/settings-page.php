@@ -16,10 +16,10 @@ function wpm_register_settings() {
 
 function wpm_sanitize_enabled_taxonomies($input) {
     $default = [
-        'portfolioType' => true,
-        'weddingType' => true,
-        'style' => true,
-        'location' => true,
+        'portfolioType' => false,
+        'weddingType' => false,
+        'style' => false,
+        'location' => false,
     ];
     if (!is_array($input)) return $default;
     foreach ($default as $key => $value) {
@@ -48,10 +48,10 @@ function wpm_render_settings_page() {
 
     $default_hero = get_option('wpm_default_hero_image', '');
     $enabled_taxonomies = get_option('wpm_enabled_taxonomies', [
-        'portfolioType' => true,
-        'weddingType' => true,
-        'style' => true,
-        'location' => true,
+        'portfolioType' => false,
+        'weddingType' => false,
+        'style' => false,
+        'location' => false,
     ]);
     ?>
     <div class="wrap">

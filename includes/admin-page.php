@@ -55,10 +55,10 @@ function wpm_admin_page() {
         'taxonomies' => wpm_get_taxonomy_terms(),
         'defaultHero' => get_option('wpm_default_hero_image', ''),
         'enabledTaxonomies' => get_option('wpm_enabled_taxonomies', [
-            'portfolioType' => true,
-            'weddingType'   => true,
-            'style'         => true,
-            'location'      => true,
+            'portfolioType' => false,
+            'weddingType'   => false,
+            'style'         => false,
+            'location'      => false,
         ]),
     ]);
 }

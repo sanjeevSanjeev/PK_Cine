@@ -57,10 +57,10 @@ add_filter('script_loader_tag', function($tag, $handle) {
 add_filter('the_content', function($content) {
     if (is_singular('portfolio') && in_the_loop() && is_main_query() && !wp_is_json_request()) {
         $enabled_taxonomies = get_option('wpm_enabled_taxonomies', [
-            'portfolioType' => true,
-            'weddingType'   => true,
-            'style'         => true,
-            'location'      => true,
+            'portfolioType' => false,
+            'weddingType'   => false,
+            'style'         => false,
+            'location'      => false,
         ]);
 
         wp_enqueue_style('wpm-frontend-css', WPM_PLUGIN_URL . 'includes/assets/App.bundle.css', [], '1.0');

@@ -85,10 +85,10 @@ add_shortcode('wedding_portfolio_single', function() {
     global $post;
     
     $enabled_taxonomies = get_option('wpm_enabled_taxonomies', [
-        'portfolioType' => true,
-        'weddingType'   => true,
-        'style'         => true,
-        'location'      => true,
+        'portfolioType' => false,
+        'weddingType'   => false,
+        'style'         => false,
+        'location'      => false,
     ]);
 
     wp_enqueue_style('wpm-frontend-css', WPM_PLUGIN_URL . 'includes/assets/App.bundle.css', [], '1.0');
