@@ -43,13 +43,11 @@ function wpm_admin_menu() {
 function wpm_admin_page() {
     echo '<div id="wpm-admin-root"></div>';
     
-    wp_enqueue_script('wpm-admin-js', WPM_PLUGIN_URL . 'includes/assets/admin.bundle.js', [], '1.0', true);
+    // Enqueue CSS normally
     wp_enqueue_style('wpm-admin-css', WPM_PLUGIN_URL . 'includes/assets/App.bundle.css', [], '1.0');
 
-    // Force ES module
-    wp_script_add_data('wpm-admin-js', 'type', 'module');
-
-    wp_localize_script('wpm-admin-js', 'wpmAdmin', [
+    // Prepare localized data
+    $data = [
         'apiRoot'    => esc_url_raw(rest_url('wp/v2/portfolios')),
         'nonce'      => wp_create_nonce('wp_rest'),
         'taxonomies' => wpm_get_taxonomy_terms(),
@@ -60,5 +58,11 @@ function wpm_admin_page() {
             'style'         => false,
             'location'      => false,
         ]),
-    ]);
+    ];
+
+    // Output the data as a global JavaScript variable
+    echo '<script>window.wpmAdmin = ' . wp_json_encode($data) . ';</script>';
+
+    // Output the main entry script as an ES module (bypass WordPress enqueuing)
+    echo '<script type="module" src="' . WPM_PLUGIN_URL . 'includes/assets/admin.bundle.js"></script>';
 }

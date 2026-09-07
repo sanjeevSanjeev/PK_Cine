@@ -129,7 +129,7 @@
                     'div',
                     {
                         className: 'wp-block-wpm-placeholder',
-                        style: { padding: '20px', background: '#f1f1f1', borderRadius: '4px', textAlign: 'center' }
+                        style: { padding: '20px', borderRadius: '4px', textAlign: 'center' }
                     },
                     el( 'h3', {}, config.title ),
                     el( 'p', {}, config.description ),
