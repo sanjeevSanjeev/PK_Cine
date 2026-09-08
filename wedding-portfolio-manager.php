@@ -81,3 +81,13 @@ add_filter('the_content', function($content) {
     }
     return $content;
 }, 10, 1);
+
+add_action('wp_enqueue_scripts', function() {
+    if (is_admin()) return;
+    global $post;
+    $is_portfolio_page = is_singular('portfolio');
+    $has_shortcode = $post && has_shortcode($post->post_content, 'wedding_portfolio');
+    if (!$is_portfolio_page && !$has_shortcode) {
+        wp_dequeue_style('wpm-frontend-css');
+    }
+}, 20);
