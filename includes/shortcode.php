@@ -67,8 +67,10 @@ function wpm_shortcode($atts) {
         'taxonomies'        => wpm_get_taxonomy_terms_shortcode(),
         'enabledTaxonomies' => $enabled_taxonomies,
     ];
-
-    echo '<script>window.wpmFrontendInstances = window.wpmFrontendInstances || {}; window.wpmFrontendInstances["' . esc_js($container_id) . '"] = ' . wp_json_encode($data) . ';</script>';
+    // Inside wpm_shortcode(), after wp_enqueue_script:
+echo '<script>window.wpmFrontendInstances = window.wpmFrontendInstances || {}; window.wpmFrontendInstances["' . esc_js($container_id) . '"] = ' . wp_json_encode($data) . ';</script>';
+// Also set window.wpmFrontend for single-page fallback:
+echo '<script>window.wpmFrontend = ' . wp_json_encode($data) . ';</script>';
 
     return '<div id="' . esc_attr($container_id) . '" data-wpm-settings="' . esc_attr(wp_json_encode($data)) . '"></div>';
 }

@@ -2,12 +2,12 @@
 /**
  * Plugin Name: Wedding Portfolio Manager
  * Description: A premium wedding portfolio manager for photographers and videographers to showcase wedding stories, films, and galleries.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Sanjeev Bhattarai
  * Author URI: https://sanjeevbhattarai.com.np/
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: wedding-portfolio-manager
+ * Text Domain: wedding-portfolio-manager-6
  */
 
 if (!defined('ABSPATH')) exit;
@@ -81,13 +81,3 @@ add_filter('the_content', function($content) {
     }
     return $content;
 }, 10, 1);
-
-add_action('wp_enqueue_scripts', function() {
-    if (is_admin()) return;
-    global $post;
-    $is_portfolio_page = is_singular('portfolio');
-    $has_shortcode = $post && has_shortcode($post->post_content, 'wedding_portfolio');
-    if (!$is_portfolio_page && !$has_shortcode) {
-        wp_dequeue_style('wpm-frontend-css');
-    }
-}, 20);
