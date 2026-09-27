@@ -29,6 +29,11 @@ function wpm_get_taxonomy_terms_shortcode() {
 
 add_shortcode('wedding_portfolio', 'wpm_shortcode');
 function wpm_shortcode($atts) {
+    // CRITICAL: Do not output anything during REST / JSON requests
+    if (wp_is_json_request()) {
+        return '<!-- wedding_portfolio shortcode placeholder -->';
+    }
+
     $atts = shortcode_atts([
         'columns'    => 3,
         'layout'     => 'grid',
@@ -42,20 +47,14 @@ function wpm_shortcode($atts) {
 
     // Get enabled taxonomies from settings
     $enabled_taxonomies = get_option('wpm_enabled_taxonomies', [
-        'portfolioType' => true,
-        'weddingType'   => true,
-        'style'         => true,
-        'location'      => true,
+        'portfolioType' => false,
+        'weddingType'   => false,
+        'style'         => false,
+        'location'      => false,
     ]);
 
-    // Enqueue CSS
     wp_enqueue_style('wpm-frontend-css', WPM_PLUGIN_URL . 'includes/assets/App.bundle.css', [], '1.0');
-
-    // Enqueue JS – the filter will add type="module"
-
     wp_enqueue_script('wpm-frontend-js', WPM_PLUGIN_URL . 'includes/assets/frontend.bundle.js', [], '1.0', true);
-    
-    wp_script_add_data('wpm-frontend-js', 'type', 'module');
 
     $unique = uniqid('wpm-frontend-');
     $container_id = 'wpm-frontend-root-' . $unique;
@@ -67,25 +66,24 @@ function wpm_shortcode($atts) {
         'taxonomies'        => wpm_get_taxonomy_terms_shortcode(),
         'enabledTaxonomies' => $enabled_taxonomies,
     ];
-    // Inside wpm_shortcode(), after wp_enqueue_script:
-echo '<script>window.wpmFrontendInstances = window.wpmFrontendInstances || {}; window.wpmFrontendInstances["' . esc_js($container_id) . '"] = ' . wp_json_encode($data) . ';</script>';
-// Also set window.wpmFrontend for single-page fallback:
-echo '<script>window.wpmFrontend = ' . wp_json_encode($data) . ';</script>';
+
+    // Output data (only on real frontend requests – REST is guarded above)
+    echo '<script>window.wpmFrontendInstances = window.wpmFrontendInstances || {}; window.wpmFrontendInstances["' . esc_js($container_id) . '"] = ' . wp_json_encode($data) . ';</script>';
 
     return '<div id="' . esc_attr($container_id) . '" data-wpm-settings="' . esc_attr(wp_json_encode($data)) . '"></div>';
 }
 
-// Shortcode for single portfolio (optional)
+// Single portfolio shortcode (optional)
 add_shortcode('wedding_portfolio_single', function() {
+    if (wp_is_json_request()) {
+        return '<!-- wedding_portfolio_single shortcode placeholder -->';
+    }
     if (!is_singular('portfolio')) {
         return '<!-- This shortcode only works on single portfolio pages -->';
     }
-    if (wp_is_json_request()) {
-        return '<div id="wpm-frontend-root"></div>';
-    }
 
     global $post;
-    
+
     $enabled_taxonomies = get_option('wpm_enabled_taxonomies', [
         'portfolioType' => false,
         'weddingType'   => false,
@@ -95,9 +93,9 @@ add_shortcode('wedding_portfolio_single', function() {
 
     wp_enqueue_style('wpm-frontend-css', WPM_PLUGIN_URL . 'includes/assets/App.bundle.css', [], '1.0');
     wp_enqueue_script('wpm-frontend-js', WPM_PLUGIN_URL . 'includes/assets/frontend.bundle.js', [], '1.0', true);
-    
+
     $container_id = 'wpm-frontend-root';
-    
+
     $data = [
         'apiRoot'           => esc_url_raw(rest_url('wp/v2/portfolios')),
         'nonce'             => wp_create_nonce('wp_rest'),
@@ -107,6 +105,6 @@ add_shortcode('wedding_portfolio_single', function() {
     ];
 
     echo '<script>window.wpmFrontend = ' . wp_json_encode($data) . ';</script>';
-    
+
     return '<div id="' . esc_attr($container_id) . '" data-wpm-settings="' . esc_attr(wp_json_encode($data)) . '"></div>';
 });

@@ -17,11 +17,6 @@ add_filter('block_categories_all', function($categories) {
     return $categories;
 });
 
-add_filter('block_categories', function($categories) {
-    $categories[] = ['slug' => 'wedding-portfolio', 'title' => 'Wedding Portfolio'];
-    return $categories;
-});
-
 add_action('init', function() {
     wp_register_script(
         'wpm-block-editor',

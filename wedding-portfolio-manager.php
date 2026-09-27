@@ -7,7 +7,7 @@
  * Author URI: https://sanjeevbhattarai.com.np/
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: wedding-portfolio-manager-6
+ * Text Domain: wedding-portfolio-manager
  */
 
 if (!defined('ABSPATH')) exit;
